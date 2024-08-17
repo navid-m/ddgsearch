@@ -33,7 +33,7 @@ public static class DuckDuckGoSearch
         catch (HttpRequestException e)
         {
             throw new Exception(
-                $"Internet connection is required to query DDG.\nSpecifics:\n{e.Message}\n\nStack trace:\n{e.StackTrace}"
+                $"Internet connection is required to query DDG.\nSpecifics:\n{e.Message}"
             );
         }
     }
