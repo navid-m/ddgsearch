@@ -2,11 +2,6 @@ namespace DuckDuckGoSearch.Tests
 {
     public class SearchTest
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void SearchAsyncTest()
         {
