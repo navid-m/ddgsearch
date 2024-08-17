@@ -2,24 +2,6 @@
 
 namespace DuckDuckGoSearch;
 
-public static class Agents
-{
-    private static readonly List<string> AgentsList =
-    [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Linux; Android 10; SM-G975F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
-    ];
-
-    public static string GetAgent()
-    {
-        var random = new Random();
-        return AgentsList[random.Next(AgentsList.Count)];
-    }
-}
-
 public static class DuckDuckGoSearch
 {
     private const string BASE_URL = "https://duckduckgo.com/html";
@@ -36,7 +18,7 @@ public static class DuckDuckGoSearch
 
     static DuckDuckGoSearch()
     {
-        client.DefaultRequestHeaders.UserAgent.ParseAdd(Agents.GetAgent());
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(GetAgent());
     }
 
     public static async Task<SearchResults> SearchAsync(string query)
@@ -108,4 +90,15 @@ public static class DuckDuckGoSearch
         }
         return results;
     }
+
+    private static readonly List<string> AgentsList =
+    [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 10; SM-G975F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Mobile/15E148 Safari/604.1",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
+    ];
+
+    private static string GetAgent() => AgentsList[new Random().Next(AgentsList.Count)];
 }
