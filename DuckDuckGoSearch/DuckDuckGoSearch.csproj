@@ -4,10 +4,36 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>DuckDuckGoSearch</Title>
+    <Version>4.2.0</Version>
+    <Authors>Navid M</Authors>
+    <Copyright></Copyright>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>Library to retrieve search results from duckduckgo based on given queries.</Description>
+    <RepositoryUrl>https://github.com/navid-m/ddgsearch/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>scraper;searcher;duckduckgo;ddg;duckduckscrape;ddgs;duckduckgosearch</PackageTags>
+    <PackageProjectUrl>https://github.com/navid-m/ddgsearch/</PackageProjectUrl>
+	<PackageIcon>Assets\lol.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.63" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\lol.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
