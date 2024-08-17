@@ -10,9 +10,9 @@ namespace DuckDuckGoSearch.Tests
         [Test]
         public void SearchAsyncTest()
         {
-           var searchResults = DuckDuckGoSearch.SearchAsync("Test").Result;
+            var searchResults = DuckDuckGoSearch.SearchAsync("Test").Result;
             Console.WriteLine($"Got {searchResults.Count} results:\n");
-           foreach (var result in searchResults)
+            foreach (var result in searchResults)
             {
                 Console.WriteLine(result.Title);
             }

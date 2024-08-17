@@ -55,7 +55,8 @@ public static class DuckDuckGoSearch
                     $"Failed to retrieve search results. Status code: {response.StatusCode}"
                 );
             }
-        } catch (HttpRequestException e)
+        }
+        catch (HttpRequestException e)
         {
             throw new Exception($"Internet connection is required to query DDG.\nSpecifics:\n{e.Message}\n\nStack trace:\n{e.StackTrace}");
         }
@@ -75,7 +76,7 @@ public static class DuckDuckGoSearch
                 "//div[@class='links_main links_deep result__body']"
             )
         )
-        { 
+        {
             var link = result
                 .SelectSingleNode(".//a[@class='result__a']")
                 .GetAttributeValue("href", string.Empty);
