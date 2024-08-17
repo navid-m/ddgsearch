@@ -17,8 +17,7 @@ namespace DuckDuckGoSearch.Tests
         [Test]
         public void SearchAsyncAllAttribsTest()
         {
-            var searchResults = DuckDuckGoSearch.SearchAsync("Who cares").Result;
-            foreach (var result in searchResults)
+            foreach (var result in DuckDuckGoSearch.SearchAsync("Who cares").Result)
             {
                 Assert.Multiple(() =>
                 {
