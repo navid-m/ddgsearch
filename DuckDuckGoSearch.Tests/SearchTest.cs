@@ -1,3 +1,4 @@
+
 namespace DuckDuckGoSearch.Tests
 {
     public class SearchTest
@@ -5,7 +6,7 @@ namespace DuckDuckGoSearch.Tests
         [Test]
         public void SearchAsyncTest()
         {
-            var searchResults = DuckDuckGoSearch.SearchAsync("Test").Result;
+            var searchResults = DuckDuckGoSearch.SearchAsync("Pizza").Result;
             Console.WriteLine($"Got {searchResults.Count} results:\n");
             foreach (var result in searchResults)
             {

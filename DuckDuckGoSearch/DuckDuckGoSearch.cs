@@ -1,5 +1,6 @@
 ﻿using DuckDuckGoSearch.Models;
 using HtmlAgilityPack;
+using System.Collections.Concurrent;
 
 namespace DuckDuckGoSearch;
 
@@ -45,43 +46,42 @@ public static class DuckDuckGoSearch
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
-        var results = new SearchResults();
+        var results = new ConcurrentBag<SearchResult>();
+        var nodes = doc.DocumentNode.SelectNodes("//div[@class='links_main links_deep result__body']");
 
-        foreach (
-            var result in doc.DocumentNode.SelectNodes(
-                "//div[@class='links_main links_deep result__body']"
-            )
-        )
+        if (nodes != null)
         {
-            var link = result
-                .SelectSingleNode(".//a[@class='result__a']")
-                .GetAttributeValue("href", string.Empty);
-
-            var title = result.SelectSingleNode(".//h2[@class='result__title']").InnerText?.Trim();
-
-            if (title != null)
+            Parallel.ForEach(nodes, result =>
             {
-                if (title.Contains("Ad clicks are managed by Microsoft's ad network"))
+                var link = result.SelectSingleNode(".//a[@class='result__a']")?.GetAttributeValue("href", string.Empty);
+                var title = result.SelectSingleNode(".//h2[@class='result__title']")?.InnerText?.Trim();
+                if (title != null && title.Contains("Ad clicks are managed by Microsoft's ad network"))
                 {
-                    continue;
+                    return;
                 }
-            }
-
-            if (!string.IsNullOrEmpty(link) && !string.IsNullOrEmpty(title))
-            {
-                results.Add(
-                    new SearchResult
-                    {
-                        Link = RemoveGarbage(link),
-                        Title = title,
-                        Description = result.SelectSingleNode(".//a[@class='result__snippet']")
-                                            .InnerText?
-                                            .Trim()
-                    }
-                );
-            }
+                if (!string.IsNullOrEmpty(link) && !string.IsNullOrEmpty(title))
+                {
+                    results.Add(
+                        new SearchResult
+                        {
+                            Link = RemoveGarbage(link),
+                            Title = title,
+                            Description = result.SelectSingleNode(".//a[@class='result__snippet']")?
+                                                .InnerText?
+                                                .Trim()
+                        }
+                    );
+                }
+            });
         }
-        return results;
+
+        var searchResults = new SearchResults();
+        foreach (var result in results)
+        {
+            searchResults.Add(result);
+        }
+
+        return searchResults;
     }
 
     private static readonly List<string> AgentsList =
