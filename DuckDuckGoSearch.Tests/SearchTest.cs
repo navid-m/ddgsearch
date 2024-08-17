@@ -13,5 +13,19 @@ namespace DuckDuckGoSearch.Tests
             }
             Assert.That(searchResults, Is.Not.Empty);
         }
+
+        [Test]
+        public void SearchAsyncAllAttribsTest()
+        {
+            var searchResults = DuckDuckGoSearch.SearchAsync("Who cares").Result;
+            foreach (var result in searchResults)
+            {
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result.Title, Is.Not.Null);
+                    Assert.That(result.Link, Is.Not.Null);
+                });
+            }
+        }
     }
 }
