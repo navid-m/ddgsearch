@@ -1,6 +1,6 @@
-﻿using System.Collections.Concurrent;
-using DuckDuckGoSearch.Models;
+﻿using DuckDuckGoSearch.Models;
 using HtmlAgilityPack;
+using System.Collections.Concurrent;
 
 namespace DuckDuckGoSearch;
 
@@ -8,7 +8,7 @@ public static class DuckDuckGoSearch
 {
     private const string BaseURL = "https://duckduckgo.com/html";
     private static readonly HttpClient Client = new();
-    private static Random Rand = new Random();
+    private static readonly Random Rand = new();
 
     static DuckDuckGoSearch()
     {
