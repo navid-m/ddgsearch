@@ -81,6 +81,10 @@ public static class DuckDuckGoSearch
             searchResults.Add(result);
         }
 
+        if (searchResults.Count == 0)
+        {
+            throw new Exception("You got ratelimited, or there are no results for the provided query.");
+        }
         return searchResults;
     }
 
