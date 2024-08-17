@@ -56,6 +56,7 @@ public static class DuckDuckGoSearch
             var link = result
                 .SelectSingleNode(".//a[@class='result__a']")
                 .GetAttributeValue("href", string.Empty);
+
             var title = result.SelectSingleNode(".//h2[@class='result__title']").InnerText?.Trim();
 
             if (title != null)
@@ -66,10 +67,6 @@ public static class DuckDuckGoSearch
                 }
             }
 
-            var description = result
-                .SelectSingleNode(".//a[@class='result__snippet']")
-                .InnerText?.Trim();
-
             if (!string.IsNullOrEmpty(link) && !string.IsNullOrEmpty(title))
             {
                 results.Add(
@@ -77,7 +74,9 @@ public static class DuckDuckGoSearch
                     {
                         Link = RemoveGarbage(link),
                         Title = title,
-                        Description = description
+                        Description = result.SelectSingleNode(".//a[@class='result__snippet']")
+                                            .InnerText?
+                                            .Trim()
                     }
                 );
             }
