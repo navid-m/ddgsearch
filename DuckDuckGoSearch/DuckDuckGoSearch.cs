@@ -6,19 +6,19 @@ namespace DuckDuckGoSearch;
 
 public static class DuckDuckGoSearch
 {
-    private const string BASE_URL = "https://duckduckgo.com/html";
-    private static readonly HttpClient client = new();
+    private const string BaseURL = "https://duckduckgo.com/html";
+    private static readonly HttpClient Client = new();
 
     static DuckDuckGoSearch()
     {
-        client.DefaultRequestHeaders.UserAgent.ParseAdd(GetAgent());
+        Client.DefaultRequestHeaders.UserAgent.ParseAdd(GetAgent());
     }
 
     public static async Task<SearchResults> SearchAsync(string query)
     {
         try
         {
-            var response = await client.GetAsync($"{BASE_URL}?q={query}");
+            var response = await Client.GetAsync($"{BaseURL}?q={query}");
             if (response.IsSuccessStatusCode)
             {
                 var html = await response.Content.ReadAsStringAsync();
