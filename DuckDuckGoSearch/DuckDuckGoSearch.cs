@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using DuckDuckGoSearch.Models;
+using HtmlAgilityPack;
 
 namespace DuckDuckGoSearch;
 
@@ -6,15 +7,6 @@ public static class DuckDuckGoSearch
 {
     private const string BASE_URL = "https://duckduckgo.com/html";
     private static readonly HttpClient client = new();
-
-    public class SearchResults : List<SearchResult> { }
-
-    public class SearchResult
-    {
-        public required string Link { get; set; }
-        public required string Title { get; set; }
-        public string? Description { get; set; }
-    }
 
     static DuckDuckGoSearch()
     {
@@ -40,7 +32,9 @@ public static class DuckDuckGoSearch
         }
         catch (HttpRequestException e)
         {
-            throw new Exception($"Internet connection is required to query DDG.\nSpecifics:\n{e.Message}\n\nStack trace:\n{e.StackTrace}");
+            throw new Exception(
+                $"Internet connection is required to query DDG.\nSpecifics:\n{e.Message}\n\nStack trace:\n{e.StackTrace}"
+            );
         }
     }
 
