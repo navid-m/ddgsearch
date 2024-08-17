@@ -1,4 +1,3 @@
-
 namespace DuckDuckGoSearch.Tests
 {
     public class SearchTest
