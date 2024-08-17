@@ -1,6 +1,6 @@
-﻿using DuckDuckGoSearch.Models;
+﻿using System.Collections.Concurrent;
+using DuckDuckGoSearch.Models;
 using HtmlAgilityPack;
-using System.Collections.Concurrent;
 
 namespace DuckDuckGoSearch;
 
@@ -8,6 +8,7 @@ public static class DuckDuckGoSearch
 {
     private const string BaseURL = "https://duckduckgo.com/html";
     private static readonly HttpClient Client = new();
+    private static Random Rand = new Random();
 
     static DuckDuckGoSearch()
     {
@@ -47,32 +48,44 @@ public static class DuckDuckGoSearch
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
         var results = new ConcurrentBag<SearchResult>();
-        var nodes = doc.DocumentNode.SelectNodes("//div[@class='links_main links_deep result__body']");
+        var nodes = doc.DocumentNode.SelectNodes(
+            "//div[@class='links_main links_deep result__body']"
+        );
 
         if (nodes != null)
         {
-            Parallel.ForEach(nodes, result =>
-            {
-                var link = result.SelectSingleNode(".//a[@class='result__a']")?.GetAttributeValue("href", string.Empty);
-                var title = result.SelectSingleNode(".//h2[@class='result__title']")?.InnerText?.Trim();
-                if (title != null && title.Contains("Ad clicks are managed by Microsoft's ad network"))
+            Parallel.ForEach(
+                nodes,
+                result =>
                 {
-                    return;
+                    var link = result
+                        .SelectSingleNode(".//a[@class='result__a']")
+                        ?.GetAttributeValue("href", string.Empty);
+                    var title = result
+                        .SelectSingleNode(".//h2[@class='result__title']")
+                        ?.InnerText?.Trim();
+                    if (
+                        title != null
+                        && title.Contains("Ad clicks are managed by Microsoft's ad network")
+                    )
+                    {
+                        return;
+                    }
+                    if (!string.IsNullOrEmpty(link) && !string.IsNullOrEmpty(title))
+                    {
+                        results.Add(
+                            new SearchResult
+                            {
+                                Link = RemoveGarbage(link),
+                                Title = title,
+                                Description = result
+                                    .SelectSingleNode(".//a[@class='result__snippet']")
+                                    ?.InnerText?.Trim()
+                            }
+                        );
+                    }
                 }
-                if (!string.IsNullOrEmpty(link) && !string.IsNullOrEmpty(title))
-                {
-                    results.Add(
-                        new SearchResult
-                        {
-                            Link = RemoveGarbage(link),
-                            Title = title,
-                            Description = result.SelectSingleNode(".//a[@class='result__snippet']")?
-                                                .InnerText?
-                                                .Trim()
-                        }
-                    );
-                }
-            });
+            );
         }
 
         var searchResults = new SearchResults();
@@ -82,7 +95,9 @@ public static class DuckDuckGoSearch
         }
         if (searchResults.Count == 0)
         {
-            throw new Exception("You got ratelimited, or there are no results for the provided query.");
+            throw new Exception(
+                "You got ratelimited, or there are no results for the provided query."
+            );
         }
         return searchResults;
     }
@@ -96,5 +111,5 @@ public static class DuckDuckGoSearch
         "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
     ];
 
-    private static string GetAgent() => AgentsList[new Random().Next(AgentsList.Count)];
+    private static string GetAgent() => AgentsList[Rand.Next(AgentsList.Count)];
 }
