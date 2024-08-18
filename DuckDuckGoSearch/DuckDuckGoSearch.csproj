@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>DuckDuckGoSearch</Title>
-    <Version>4.2.1</Version>
+    <Version>4.2.2</Version>
     <Authors>Navid M</Authors>
     <Copyright></Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
