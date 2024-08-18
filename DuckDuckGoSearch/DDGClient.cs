@@ -15,7 +15,7 @@ public static class DDGClient
         Client.DefaultRequestHeaders.UserAgent.ParseAdd(GetAgent());
     }
 
-    public static async Task<SearchResults> SearchAsync(string query)
+    public static async Task<DDGSearchResults> SearchAsync(string query)
     {
         try
         {
@@ -43,11 +43,11 @@ public static class DDGClient
     private static string RemoveGarbage(string uri) =>
         Uri.UnescapeDataString(uri.Replace("//duckduckgo.com/l/?uddg=", "").Split('&')[0]);
 
-    private static SearchResults ParseHtml(string html)
+    private static DDGSearchResults ParseHtml(string html)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
-        var results = new ConcurrentBag<SearchResult>();
+        var results = new ConcurrentBag<DDGSearchResult>();
         var nodes = doc.DocumentNode.SelectNodes(
             "//div[@class='links_main links_deep result__body']"
         );
@@ -74,7 +74,7 @@ public static class DDGClient
                     if (!string.IsNullOrEmpty(link) && !string.IsNullOrEmpty(title))
                     {
                         results.Add(
-                            new SearchResult
+                            new DDGSearchResult
                             {
                                 Link = RemoveGarbage(link),
                                 Title = title,
@@ -88,7 +88,7 @@ public static class DDGClient
             );
         }
 
-        var searchResults = new SearchResults();
+        var searchResults = new DDGSearchResults();
         foreach (var result in results)
         {
             searchResults.Add(result);
