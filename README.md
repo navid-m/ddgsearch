@@ -7,7 +7,7 @@ Each returned SearchResult object contains the title, description, and URL.
 ## Example Usage
 
 ```csharp
-var searchResults = await DDGS.SearchAsync("Some query");
+var searchResults = await DDGClient.SearchAsync("Some query");
 Console.WriteLine($"Got {searchResults.Count} results:");
 foreach (var result in searchResults)
 {

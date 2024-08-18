@@ -4,13 +4,13 @@ using System.Collections.Concurrent;
 
 namespace DuckDuckGoSearch;
 
-public static class DDGS
+public static class DDGClient
 {
     private const string BaseURL = "https://duckduckgo.com/html";
     private static readonly HttpClient Client = new();
     private static readonly Random Rand = new();
 
-    static DDGS()
+    static DDGClient()
     {
         Client.DefaultRequestHeaders.UserAgent.ParseAdd(GetAgent());
     }
