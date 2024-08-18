@@ -5,7 +5,7 @@ namespace DuckDuckGoSearch.Tests
         [Test]
         public void SearchAsyncTest()
         {
-            var searchResults = DuckDuckGoSearch.SearchAsync("Pizza").Result;
+            var searchResults = DDGS.SearchAsync("Pizza").Result;
             Console.WriteLine($"Got {searchResults.Count} results:\n");
             foreach (var result in searchResults)
             {
@@ -17,7 +17,7 @@ namespace DuckDuckGoSearch.Tests
         [Test]
         public void SearchAsyncAllAttribsTest()
         {
-            foreach (var result in DuckDuckGoSearch.SearchAsync("Who cares").Result)
+            foreach (var result in DDGS.SearchAsync("Who cares").Result)
             {
                 Assert.Multiple(() =>
                 {
